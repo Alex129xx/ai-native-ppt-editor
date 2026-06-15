@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Native PPT Editor Prototype</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">AI Native PPT</p>
+          <h1>季度复盘老板汇报</h1>
+        </div>
+        <div class="top-actions">
+          <span id="statusText" class="status-pill">结构已生成</span>
+          <button id="sourceBtn" class="ghost-btn" type="button">查看来源</button>
+          <button class="primary-btn" type="button">导出</button>
+        </div>
+      </header>
+
+      <main class="workspace" aria-label="AI Native PPT editor">
+        <section class="panel source-panel" aria-labelledby="source-title">
+          <div class="section-heading">
+            <p class="eyebrow">Input</p>
+            <h2 id="source-title">任务与叙事大纲</h2>
+          </div>
+
+          <div class="task-box">
+            <label for="taskInput">源材料任务</label>
+            <textarea id="taskInput">把季度复盘材料做成 10 页老板汇报，突出增长结论、关键风险和下季度动作。</textarea>
+            <button id="generateBtn" class="secondary-btn" type="button">生成叙事大纲</button>
+          </div>
+
+          <div class="intent-summary">
+            <div>
+              <span>受众</span>
+              <strong id="audienceText">CEO / 业务负责人</strong>
+            </div>
+            <div>
+              <span>核心观点</span>
+              <strong id="claimText">增长可持续，但转化效率需优先修复</strong>
+            </div>
+          </div>
+
+          <div class="outline-list" id="outlineList" aria-label="Narrative outline">
+            <button class="outline-item active" type="button" data-slide="0">
+              <span class="node-index">01</span>
+              <span>
+                <strong>结论先行</strong>
+                <small>先给老板判断：增长质量高于规模</small>
+              </span>
+              <em data-lock="0">未锁定</em>
+            </button>
+            <button class="outline-item" type="button" data-slide="1">
+              <span class="node-index">02</span>
+              <span>
+                <strong>增长事实</strong>
+                <small>展示 GMV、留存、复购三组证据</small>
+              </span>
+              <em data-lock="1">未锁定</em>
+            </button>
+            <button class="outline-item" type="button" data-slide="2">
+              <span class="node-index">03</span>
+              <span>
+                <strong>风险诊断</strong>
+                <small>转化漏斗与内容供给瓶颈</small>
+              </span>
+              <em data-lock="2">未锁定</em>
+            </button>
+            <button class="outline-item" type="button" data-slide="3">
+              <span class="node-index">04</span>
+              <span>
+                <strong>行动计划</strong>
+                <small>下季度三条确定性动作</small>
+              </span>
+              <em data-lock="3">未锁定</em>
+            </button>
+          </div>
+        </section>
+
+        <section class="panel preview-panel" aria-labelledby="preview-title">
+          <div class="section-heading">
+            <p class="eyebrow">Canvas</p>
+            <h2 id="preview-title">幻灯片预览</h2>
+          </div>
+
+          <div class="slide-frame" id="slideFrame">
+            <div class="slide-topline">
+              <span id="slideChapter">01 / 结论先行</span>
+              <span id="lockBadge" class="lock-badge">可再生成</span>
+            </div>
+            <h3 id="slideTitle">增长不是问题，增长质量才是下季度关键</h3>
+            <p id="slideBody">本季度核心指标继续上行，但新增转化效率出现下滑。建议把下季度主线从“继续扩量”调整为“修复转化、保护复购、放大高质量渠道”。</p>
+            <div class="slide-evidence">
+              <div>
+                <span>GMV</span>
+                <strong id="metricOne">+18%</strong>
+              </div>
+              <div>
+                <span>复购</span>
+                <strong id="metricTwo">+11%</strong>
+              </div>
+              <div>
+                <span>转化</span>
+                <strong id="metricThree">-6%</strong>
+              </div>
+            </div>
+            <div class="claim-trace">
+              <span>来源追溯</span>
+              <button id="traceBtn" type="button">Q2 复盘记录 / 漏斗数据表 / 用户访谈摘要</button>
+            </div>
+          </div>
+
+          <div class="change-trail">
+            <span>版本记录</span>
+            <ol id="versionList">
+              <li>v3 调整为老板视角，结论前置</li>
+              <li>v2 强化风险诊断章节</li>
+              <li>v1 从源材料生成初稿结构</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="panel control-panel" aria-labelledby="control-title">
+          <div class="section-heading">
+            <p class="eyebrow">Control</p>
+            <h2 id="control-title">AI 意图与控制</h2>
+          </div>
+
+          <div class="control-group">
+            <label for="audienceSelect">受众视角</label>
+            <select id="audienceSelect">
+              <option>CEO / 业务负责人</option>
+              <option>一线业务团队</option>
+              <option>投资人 / 董事会</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="toneSelect">表达语气</label>
+            <select id="toneSelect">
+              <option>结论先行</option>
+              <option>数据驱动</option>
+              <option>风险预警</option>
+              <option>行动导向</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="emphasisRange">证据权重</label>
+            <input id="emphasisRange" type="range" min="1" max="5" value="4">
+            <span id="emphasisText">偏重数据证据</span>
+          </div>
+
+          <div class="lock-box">
+            <div>
+              <strong>意图锁定</strong>
+              <p>保护已接受的观点、数据和版式，避免 AI 全局覆盖。</p>
+            </div>
+            <button id="lockBtn" class="secondary-btn" type="button">锁定当前页</button>
+          </div>
+
+          <div class="regen-box">
+            <label for="scopeSelect">局部再生成范围</label>
+            <select id="scopeSelect">
+              <option>仅当前页</option>
+              <option>当前章节</option>
+              <option>选中内容块</option>
+              <option>仅改语气</option>
+              <option>仅补证据</option>
+            </select>
+            <button id="regenBtn" class="primary-btn" type="button">局部再生成</button>
+          </div>
+
+          <div class="fallback-actions">
+            <button id="rollbackBtn" type="button">回退版本</button>
+            <button id="manualBtn" type="button">手动细节编辑</button>
+            <button id="continueBtn" type="button">进入传统编辑</button>
+          </div>
+
+          <div id="messageBox" class="message-box" aria-live="polite">
+            选择左侧叙事节点，右侧幻灯片会联动更新。
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
